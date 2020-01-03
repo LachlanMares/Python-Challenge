@@ -55,7 +55,7 @@ if __name__ == '__main__':
     newUrl = url.replace(url.split('.')[-1], fileType)
     archiveName = newUrl.split('/')[-1]
 
-    download_archive_from_url(newUrl, archiveName)
+    #download_archive_from_url(newUrl, archiveName)
 
     nameList = read_archived_filenames(archiveName)
 
@@ -77,23 +77,27 @@ if __name__ == '__main__':
         nextFilename, fileComment, done = get_the_nextfile(archiveName, nextFilename+'.txt')
         fileComments = fileComments + fileComment
 
-
     print(fileComments)
 
     newUrl = url.replace("channel", "hockey")
 
     print(urllib.request.urlopen(newUrl).read().decode())
 
-    line5String = fileComments.split("\n")[5]
-    line5String = line5String.replace(" ", "").replace("*","")
-    line5StringUnique = ""
+    commentLines = fileComments.split("\n")
+    containsAlpha = ""
+    alphaUnique = ""
     prevChar = ''
 
-    for i in range(len(line5String)):
-        if line5String[i] != prevChar:
-            line5StringUnique += line5String[i]
+    for line in commentLines:
+        if any(char.isalpha() for char in line):
+            containsAlpha = line.replace(" ", "").replace("*","")
+            break
 
-        prevChar = line5String[i]
+    for i in range(len(containsAlpha)):
+        if containsAlpha[i] != prevChar:
+            alphaUnique += containsAlpha[i]
 
-    newUrl = url.replace("channel", line5StringUnique.lower())
+        prevChar = containsAlpha[i]
+
+    newUrl = url.replace("channel", alphaUnique.lower())
     print(newUrl)
