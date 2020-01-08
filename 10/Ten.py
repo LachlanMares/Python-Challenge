@@ -50,11 +50,18 @@ if __name__ == '__main__':
         nextMember = nextMember + "%s%s" % (digitCount, prevMember[-1])
         return nextMember
 
+    seqMatch = True
 
     for i in range(30):
         sequence.append(nextSequenceMember(sequence[-1]))
         if i < seqLength:
             if sequence[i] == a[i]:
-                print("seq match", i)
+                continue
+            else:
+                seqMatch = True
+                break
 
-    print(url.replace("bull", str(len(sequence[-1]))))
+    if seqMatch:
+        print(url.replace("bull", str(len(sequence[-1]))))
+    else:
+        print("Sequence does not match")
